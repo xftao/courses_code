@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 num_cluster = 4
-
+print("haha")
 
 def read_train_data():
     train_data = []
@@ -22,13 +22,12 @@ def cal_prob(x, miu, sigma, dimension=2):
     p = ((2 * np.pi) ** (dimension / 2) * np.linalg.det(sigma) ** (1 / 2)) ** (-1)
     p = p * np.exp((-1 / 2) * exp_val)
     return p
-
-
-def e_step(data, alpha, miu, sigma):
-    expect = np.zeros((4,))
-    for data_i in data:
-        for a_i, miu_i, sigma_i in zip(alpha, miu, sigma):
-
+#
+#
+# def e_step(data, alpha, miu, sigma):
+#     expect = np.zeros((4,))
+#     for data_i in data:
+#         for a_i, miu_i, sigma_i in zip(alpha, miu, sigma):
 
 
 def train():
