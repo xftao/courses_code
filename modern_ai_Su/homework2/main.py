@@ -26,18 +26,20 @@ def cal_prob(x, miu, sigma, dimension=2):
     return p
 
 
-def m_step(gamma, alpha, miu, sigma):
-    # update alpha
+def m_step(alpha, data, gamma, miu, sigma, ):
+    n_k = np.zeros((num_cluster,))
     for k in range(num_cluster):
-        temp_alpha = 0
+        # calculate nk
         for gamma_k_i in gamma[:, k]:
-            temp_alpha = temp_alpha + gamma_k_i
+            n_k[k] = n_k[k] + gamma_k_i
 
-        temp_alpha = temp_alpha / 5000
-        alpha[k] = temp_alpha
+        # update miu
+        temp_miu = np.zeros(num_cluster, data_dimension)
+        for i in range(num_data):
+            temp_miu = temp_miu + gamma[k] * data[i]
 
-    # update miu
-    
+        miu[k] = temp_miu / n_k[k]
+
 
 def e_step(data, alpha, miu, sigma):
     gamma = np.zeros((num_cluster, num_data))
