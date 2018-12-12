@@ -120,6 +120,7 @@ def perform(data, alpha, miu, sigma):
 
     plt_arg = ['.r', '.b', '.g', '.y']
     for key in cluster:
+        cluster[key] = np.array(cluster[key])
         plt.plot(cluster[key][:, 0], cluster[key][:, 1], plt_arg[key])
     plt.show()
 
