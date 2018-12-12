@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 
 
 num_cluster = 4
-print("haha")
+num_data = 5000
+data_dimension = 2
+
 
 def read_train_data():
     train_data = []
@@ -22,21 +24,41 @@ def cal_prob(x, miu, sigma, dimension=2):
     p = ((2 * np.pi) ** (dimension / 2) * np.linalg.det(sigma) ** (1 / 2)) ** (-1)
     p = p * np.exp((-1 / 2) * exp_val)
     return p
-#
-#
-# def e_step(data, alpha, miu, sigma):
-#     expect = np.zeros((4,))
-#     for data_i in data:
-#         for a_i, miu_i, sigma_i in zip(alpha, miu, sigma):
+
+
+def m_step(gamma, alpha, miu, sigma):
+    # update alpha
+    for k in range(num_cluster):
+        temp_alpha = 0
+        for gamma_k_i in gamma[:, k]:
+            temp_alpha = temp_alpha + gamma_k_i
+
+        temp_alpha = temp_alpha / 5000
+        alpha[k] = temp_alpha
+
+    # update miu
+    
+
+def e_step(data, alpha, miu, sigma):
+    gamma = np.zeros((num_cluster, num_data))
+    for i, data_i in enumerate(data):
+        for k, a_k, miu_k, sigma_k in enumerate(zip(alpha, miu, sigma)):
+            gamma[i, k] = a_k * cal_prob(data_i, miu_k, sigma_k)
+
+        k_sum = np.sum(gamma[i, :])
+        for k, prob_k in enumerate(gamma[i, :]):
+            gamma[i, k] = prob_k/k_sum
+
+    return gamma
 
 
 def train():
     data = read_train_data()
     data = np.array(data)
     # cal_prob([[1.5], [0]], [[0], [0]], [[1, 0], [0, 1]], 2)
-    alpha = np.zeros((4, ))
-    miu = np.zeros((4, 2))
-    sigma = np.zeros((4, 2, 2))
+    alpha = np.array([1/num_cluster, 1/num_cluster, 1/num_cluster, 1/num_cluster])
+    miu = np.zeros((num_cluster, data_dimension))
+    sigma = np.zeros((num_cluster, data_dimension, data_dimension))
     plt.plot(data[:, 0], data[:, 1], '.')
     plt.show()
 
